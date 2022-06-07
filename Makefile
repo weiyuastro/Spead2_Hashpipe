@@ -16,13 +16,10 @@ CXXFLAGS+=        -shared -lstdc++ -msse4 \
                      -L. -L/usr/local/lib \
                      -lhashpipe -lrt -lm
 
-#added by weiyu
-# LIBS+=        -Wl,-rpath=. -Llibtcc -ltcc -libverbs -lboost_system -lspead2 -ldl
+
 LIBS+=        -Wl,-rpath=.  -libverbs -lboost_system -ldl
 
 
-
-##changed by weiyu
 
 
 HPXengine_LIB_SOURCES  = Xengine_net_thread.cc \
@@ -36,13 +33,8 @@ HPXengine_LIB_OBJECTS=$(HPXengine_LIB_SOURCES:%.cc=%.o)
 
 
 
-#Xengine_LIB_TARGET=Xengine_hashpipe.so
-
 Xengine_LIB_TARGET=Spead2_hashpipe.so
 
-# gpu thread
-#Xengine_gpu_thread.o: libtcc/TCCorrelator.cu  Xengine_reorder.h  Xengine_reorder.cc
-#	$(NVCC) -c -o $@ $< $(NVCCFLAGS)
 
 %.d:			%.cc
 			-$(CXX) $(CXXFLAGS) -MM -MT $@ -MT ${@:%.d=%.o} -MT ${@:%.d=%.s} $< -o $@
@@ -59,7 +51,6 @@ Xengine_LIB_TARGET=Spead2_hashpipe.so
 
 all: $(Xengine_LIB_TARGET)
 
-#need to be checked again
 $(Xengine_LIB_TARGET): $(HPXengine_LIB_OBJECTS) /usr/local/lib/libspead2.so
 	$(CXX) -shared -o $@ $^ $(LIBS) $(CXXFLAGS)
 
